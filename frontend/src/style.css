@@ -1,0 +1,548 @@
+/* 1. Box-sizing: Border-box for all elements */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* 2. Prevent font size inflation on mobile */
+html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+}
+
+/* 3. Remove default margins (except dialog for centering) */
+:not(dialog) {
+    margin: 0;
+}
+
+/* 4. Enable smooth size interpolations for animations */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+        /* Bonus: Smooth scrolling */
+    }
+}
+
+/* 5. Core body typography */
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100svh;
+    /* Small viewport height for full coverage */
+}
+
+/* 6. Shorter line heights for headings and forms */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+button,
+input,
+label,
+select,
+textarea {
+    line-height: 1.1;
+}
+
+/* 7. Balanced text wrapping */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    text-wrap: balance;
+}
+
+p {
+    text-wrap: pretty;
+}
+
+/* 8. Media elements: Responsive and block-level */
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* 9. Inherit fonts in form controls */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* 10. Ensure textareas have usable height */
+textarea:not([rows]) {
+    min-height: 10em;
+}
+
+/* 11. Remove list styles only for semantic lists */
+ul[role="list"],
+ol[role="list"] {
+    list-style: none;
+    padding-inline-start: 0;
+    /* Logical property for RTL */
+}
+
+/* 12. Links: Skip ink on underlines */
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+    color: currentColor;
+}
+
+/* 13. Anchored elements: Extra scroll margin */
+:target {
+    scroll-margin-block: 5ex;
+}
+
+/* 14. Isolation for root (e.g., React/Vue apps) */
+#root,
+#__next {
+    isolation: isolate;
+}
+
+/* 15. Overflow wrapping for long words */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+
+:root {
+    --bg: hsl(240, 90%, 5%);
+    --text: hsl(240, 10%, 85%);
+    --code-text: hsl(240, 20%, 77%);
+    --code-bg: hsl(240, 30%, 10%);
+    --border: hsl(0, 0%, 20%);
+    --link: hsl(186, 65%, 45%);
+    --accent: hsl(240, 40%, 20%);
+    --menu-bg: hsl(0, 0%, 18%);
+    --menu-hover: hsl(0, 0%, 24%);
+    --menu-text: hsl(0, 0%, 84%);
+    --dropdown-bg: hsl(0, 0%, 18%);
+    --dropdown-shadow: rgba(0, 0, 0, 0.3);
+    --basic-font-size: 18px;
+    --table-header-bg: hsl(240, 30%, 15%);
+}
+
+body {
+    word-break: break-word;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: var(--basic-font-size);
+    line-height: 1.6;
+}
+
+
+
+/* ==========================================================================
+   Markdown Content Styles (#content prefix)
+   Covers every HTML element emitted by goldmark + extensions (GFM, Footnote,
+   Typographer, Linkify, Highlighting). Edit property values as needed.
+   ========================================================================== */
+
+#content {
+    /* Optional: max-width and centering for better readability */
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10vh;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+/* ----- Headings h1–h6 ----- */
+
+#content h1 {
+    font-size: 2.25em;
+    font-weight: bold;
+    margin-top: 1.3em;
+    margin-bottom: 1.3em;
+}
+
+#content h2 {
+    font-size: 1.75em;
+    font-weight: bold;
+    margin-top: 1.1em;
+    margin-bottom: 1.1em;
+}
+
+#content h3 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#content h4 {
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+#content h5 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#content h6 {
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+/* ----- Paragraphs ----- */
+
+#content p {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+/* ----- Blockquotes ----- */
+
+#content blockquote {
+    margin:  1em 0 0 -1em;
+    padding: 0.5em 1em;
+    font-style: italic;
+    font-size: 0.95em;
+    border-left: 1px solid var(--link);
+    border-right: 1px solid var(--link);
+    border-radius: 4px;
+    color: var(--code-text);
+}
+
+/* Nested blockquote */
+#content blockquote blockquote {
+    margin: 0.5em 0;
+}
+
+/* ----- Lists (unordered & ordered) ----- */
+
+#content ul {
+    padding-left: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    list-style: disc;
+}
+
+#content ol {
+    padding-left: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    list-style: decimal;
+}
+
+#content li {
+    margin-bottom: 0.1em;
+}
+
+/* Nested lists inside list items */
+#content li>ul,
+#content li>ol {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* ----- Code: Inline ----- */
+
+/* Inline code: `backticks` */
+#content code {
+    padding: 0.2em 0.4em;
+    font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+    font-size: 0.80em;
+    background: var(--code-bg);
+    border-radius: 4px;
+}
+
+/* ----- Code: Block-level ----- */
+
+/* Fenced / indented code block container */
+#content pre {
+    padding: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    overflow-x: auto;
+    background: var(--code-bg);
+    border-radius: 6px;
+}
+
+/* Code inside a pre block */
+#content pre>code {
+    font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
+    font-size: 0.75em;
+    color: var(--code-text);
+    line-height: 1.4;
+}
+
+/* Inline code inside a link (e.g. [`code`](url)) */
+#content a code {
+    color: var(--link);
+}
+
+/* ----- Horizontal Rules ----- */
+
+#content hr {
+    margin-top: 3em;
+    margin-bottom: 3em;
+    border: none;
+    background: linear-gradient(to right, transparent, var(--link), transparent);
+    height: 1px;
+}
+
+/* ----- Tables (GFM) ----- */
+
+#content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#content thead {
+    background: var(--table-header-bg);
+}
+
+#content tbody {
+    background: transparent;
+}
+
+#content tfoot {
+    background: transparent;
+}
+
+#content tr {
+    border-bottom: 1px solid var(--border);
+}
+
+#content th {
+    padding: 0.5em 0.75em;
+    font-weight: 600;
+    text-align: left;
+    border: 1px solid var(--border);
+}
+
+#content td {
+    padding: 0.5em 0.75em;
+    border: 1px solid var(--border);
+}
+
+/* Alternating row colors (striped table) */
+#content tr:nth-child(even) {
+    background: rgba(128, 128, 128, 0.08);
+}
+
+/* Table cell alignment (goldmark sets align attribute) */
+#content th[align="left"],
+#content td[align="left"] {
+    text-align: left;
+}
+
+#content th[align="center"],
+#content td[align="center"] {
+    text-align: center;
+}
+
+#content th[align="right"],
+#content td[align="right"] {
+    text-align: right;
+}
+
+/* ----- Links ----- */
+
+#content a {
+    color: var(--link);
+    text-decoration: none;
+}
+
+#content a:hover {
+    text-decoration: underline var(--link) 0.5px;
+    text-underline-offset: 0.15em;
+    text-underline-position: under;
+}
+
+/* ----- Images ----- */
+
+#content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* ----- Inline Formatting ----- */
+
+/* Bold: **text** or __text__ */
+#content strong {
+    font-weight: bold;
+}
+
+/* Italic: *text* or _text_ */
+#content em {
+    font-style: italic;
+}
+
+/* Strikethrough: ~~text~~ (GFM) */
+#content del,
+#content s {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+/* Highlighted text: ==text== (goldmark-highlighting extension) */
+#content mark {
+    background: var(--accent);
+    color: var(--text);
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+}
+
+/* Footnote reference superscript (goldmark-footnotes extension) */
+#content sup {
+    font-size: 0.75em;
+    vertical-align: super;
+}
+
+/* Subscript (rare in markdown, raw HTML passthrough or extension) */
+#content sub {
+    font-size: 0.75em;
+    vertical-align: sub;
+}
+
+/* Hard line breaks (two trailing spaces or backslash) */
+#content br {
+    /* no styling needed */
+}
+
+/* ----- Task List Items (GFM) ----- */
+
+/* Disabled checkbox inside task list items: - [ ] or - [x] */
+#content input[type="checkbox"] {
+    margin-right: 0.5em;
+    vertical-align: middle;
+    accent-color: var(--link);
+}
+
+/* Task list item (the <li> containing a checkbox) */
+#content li:has(> input[type="checkbox"]) {
+    list-style: none;
+}
+
+/* ----- Footnotes Section (goldmark-footnotes extension) ----- */
+
+/* Container div — .footnotes class (div.footnotes) */
+#content .footnotes {
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid var(--border);
+    font-size: 0.85em;
+}
+
+#content .footnotes hr {
+    display: none;
+}
+
+#content .footnotes ol {
+    padding-left: 1.5em;
+    margin-top: 0.5em;
+}
+
+#content .footnotes li {
+    margin-bottom: 0.5em;
+}
+
+/* Footnote back-reference link (↩) */
+#content .footnotes a {
+    color: var(--link);
+    text-decoration: none;
+}
+
+/* ----- Code Syntax Highlighting (Chroma spans via goldmark-highlighting) ----- */
+
+/*
+  When a fenced code block declares a language, goldmark-highlighting + chroma
+  wraps each token in a <span> with semantic classes. Examples:
+    .k  = keyword
+    .n  = name (identifier)
+    .s  = string literal
+    .c  = comment
+    .o  = operator
+    .p  = punctuation
+    .m  = number
+    .kt = keyword type
+    .kd = keyword declaration
+    .nf = function name
+    .nb = built-in name
+    ...and many more (see chroma documentation for full list).
+  Uncomment the rule below to style highlighted spans, or leave as-is —
+  goldmark-highlighting emits inline style colors when a chroma style is applied.
+*/
+
+/* Base container for syntax-highlighted code */
+#content .chroma {
+    /* (chroma adds this class to the <code> or <pre> element) */
+}
+
+/* All chroma token spans */
+#content .chroma .k,
+#content .chroma .n,
+#content .chroma .s,
+#content .chroma .c,
+#content .chroma .o,
+#content .chroma .p,
+#content .chroma .m,
+#content .chroma .kt,
+#content .chroma .kd,
+#content .chroma .nf,
+#content .chroma .nb {
+    /* color: ; */
+}
+
+/* ----- Definition Lists (if extension is used) ----- */
+
+#content dl {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#content dt {
+    font-weight: 600;
+    margin-top: 0.5em;
+}
+
+#content dd {
+    margin-left: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+/* ----- Details / Summary (collapsible sections, if extension is used) ----- */
+
+#content details {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#content summary {
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   End of Markdown Content Styles
+   ========================================================================== */
