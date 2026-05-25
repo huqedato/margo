@@ -1,8 +1,8 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'</script>
+import Margo from './components/Margo.vue'</script>
 
 <template>
-  <HelloWorld/>
+  <Margo/>
 </template>
 
 <style>
