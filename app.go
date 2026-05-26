@@ -109,6 +109,8 @@ func (a *App) ConvertToMd(file *FileDetails) (*ReturnResult, error) {
 		return nil, err
 	}
 
+	runtime.WindowSetTitle(a.ctx, file.Path+" - Margo")
+
 	return &ReturnResult{
 		Filename: file.Filename,
 		Path:     file.Path,
