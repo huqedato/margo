@@ -127,7 +127,7 @@ h6 {
     --bg: hsl(240, 90%, 5%);
     --text: hsl(240, 10%, 85%);
     --code-text: hsl(240, 20%, 77%);
-    --code-bg: hsl(240, 30%, 10%);
+    --code-bg:hsl(240, 30%, 15%);
     --border: hsl(0, 0%, 20%);
     --link: hsl(186, 65%, 45%);
     --accent: hsl(240, 40%, 20%);
@@ -264,12 +264,10 @@ body {
 /* ----- Code: Inline ----- */
 
 /* Inline code: `backticks` */
+
 #content code {
-    padding: 0.2em 0.4em;
     font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
     font-size: 0.80em;
-    background: var(--code-bg);
-    border-radius: 4px;
 }
 
 /* ----- Code: Block-level ----- */
@@ -280,12 +278,12 @@ body {
     margin-top: 1em;
     margin-bottom: 1em;
     overflow-x: auto;
-    background: var(--code-bg);
+    /*background: var(--code-bg);*/
     border-radius: 6px;
 }
 
 /* Code inside a pre block */
-#content pre>code {
+ #content pre>code {
     font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
     font-size: 0.75em;
     color: var(--code-text);

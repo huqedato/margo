@@ -7,7 +7,10 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/alecthomas/chroma/v2"
+	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/yuin/goldmark"
+	highlighting "github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
@@ -92,7 +95,19 @@ func (a *App) ConvertToMd(file *FileDetails) (*ReturnResult, error) {
 	}
 
 	htmlContent := goldmark.New(
-		goldmark.WithExtensions(extension.GFM, extension.Footnote, extension.Typographer, extension.Linkify), // Add GitHub Flavored Markdown extension
+		goldmark.WithExtensions(extension.GFM, extension.Footnote, extension.Typographer, extension.Linkify,
+			highlighting.NewHighlighting(
+				highlighting.WithStyle("onedark"), // Use a Chroma style for syntax highlighting
+				highlighting.WithFormatOptions(
+					chromahtml.WithLineNumbers(false),
+					//chromahtml.WithClasses(true), // Use CSS classes for styling
+					chromahtml.WithCustomCSS(map[chroma.TokenType]string{
+						chroma.Background: "background-color: transparent;", // Remove background color from code blocks
+						chroma.PreWrapper: "padding: 1em; border-radius: 5px;",
+					}),
+				),
+			),
+		), // Add GitHub Flavored Markdown extension
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(), // Automatically generate IDs for headings
 		),
