@@ -26,7 +26,6 @@ function handleLinkClick(e) {
   }
 }
 
-/** Clears any pending collapse timer. */
 function clearCollapseTimer() {
   if (collapseTimer !== null) {
     clearTimeout(collapseTimer)
@@ -51,12 +50,33 @@ function expandFooter() {
   scheduleCollapse()
 }
 
+
+// max zoom level is 2.0, min zoom level is 0.3
+function ZoomIn() {
+  const content = document.getElementById('content')
+  if (content) {
+    const currentZoom = parseFloat(content.style.zoom) || 1
+    content.style.zoom = Math.min(currentZoom + 0.03, 2.0).toString()
+  }
+}
+
+
+function ZoomOut() {
+  const content = document.getElementById('content')
+  if (content) {
+    const currentZoom = parseFloat(content.style.zoom) || 1
+    content.style.zoom = Math.max(currentZoom - 0.03, 0.3).toString()
+  }
+}
+
+
 onMounted(() => {
   document.querySelector('main')?.addEventListener('click', handleLinkClick)
 })
 
 onUnmounted(() => {
   document.querySelector('main')?.removeEventListener('click', handleLinkClick)
+  window.removeEventListener('keydown', handleKeydown, true)
   clearCollapseTimer()
 })
 
@@ -78,6 +98,32 @@ async function loadFile() {
     loading.value = false
   }
 }
+
+// Keyboard shortcuts
+function handleKeydown(e) {
+  if (e.ctrlKey && e.key === 'o') {
+    e.preventDefault()
+    loadFile()
+  } else if (e.key === 'F3') {
+    e.preventDefault()
+    console.log('Search functionality is not implemented yet.')
+  }
+  else if ( e.key === 'F4') {
+    e.preventDefault()
+    ZoomIn()
+  } else if (e.key === 'F5') {
+    e.preventDefault()
+    ZoomOut()
+  } else if (e.key === 'F1') {
+    e.preventDefault()
+    console.log('About Margo: A Markdown Viewer built with Wails and Vue.js')
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleKeydown, true)
+})
+
 </script>
 
 <template>
@@ -87,19 +133,19 @@ async function loadFile() {
       <div id="footer" class="grid" :class="{ collapsed: !footerExpanded }" @click="scheduleCollapse"
         @mouseenter="scheduleCollapse" @mouseleave="scheduleCollapse" @mousemove="scheduleCollapse">
         <div class="card">
-          <div class="item" @click="loadFile" v-html="openFileSvg" title="Open File"></div>
+          <div class="item" @click="loadFile" v-html="openFileSvg" title="Open File - Ctrl+O"></div>
         </div>
         <div class="card">
-          <div class="item" v-html="searchSvg" title="Search"></div>
+          <div class="item" v-html="searchSvg" title="Search - F3"></div>
         </div>
         <div class="card">
-          <div class="item" v-html="zoomInSvg" title="Zoom In"></div>
+          <div class="item" @click="ZoomIn"  v-html="zoomInSvg" title="Zoom In - F4"></div>
         </div>
         <div class="card">
-          <div class="item" v-html="zoomOutSvg" title="Zoom Out"></div>
+          <div class="item" @click="ZoomOut"  v-html="zoomOutSvg" title="Zoom Out - F5"></div>
         </div>
         <div class="card">
-          <div class="item" v-html="infoSvg" title="About"></div>
+          <div class="item" v-html="infoSvg" title="About - F1"></div>
         </div>
       </div>
       <div class="hamburger" :class="{ visible: !footerExpanded }" @click="expandFooter">☰</div>

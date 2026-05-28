@@ -124,9 +124,9 @@ h6 {
 
 
 :root {
-    --bg: hsl(240, 92%, 5%);
-    --text: hsl(240, 10%, 85%);
-    --code-text: hsl(240, 20%, 77%);
+    --bg: hsl(240, 90%, 5%);
+    --text: hsl(240, 0%, 80%);
+    --code-text: hsl(240, 20%, 75%);
     --code-bg: hsl(240, 30%, 15%);
     --border: hsl(0, 0%, 20%);
     --hero: hsl(186, 65%, 45%);
