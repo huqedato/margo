@@ -9,11 +9,7 @@ import zoomOutSvg from '../assets/zoom-out.svg?raw'
 import infoSvg from '../assets/info.svg?raw'
 import Mark from 'mark.js';
 
-const data = reactive({
-  content: null
-})
-
-
+const data = reactive({content: null})
 const searchInstance = ref(null)
 const searchOpen = ref(false)
 const loading = ref(false)

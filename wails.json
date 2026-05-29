@@ -9,5 +9,22 @@
   "author": {
     "name": "Quda Theo",
     "email": "your.email@example.com"
+  },
+  "info": {
+    "productName": "Margo",
+    "companyName": "Quda Theo",
+    "copyright": "Copyright (c) 2024 Quda Theo",
+    "productVersion": "0.1.0",
+    "description": "A fast simple opinionated markdown viewer",
+    "license": "MIT",
+    "fileAssociations": [
+      {
+        "ext": "md",
+        "name": "Markdown",
+        "description": "Markdown file",
+        "iconName": "appicon",
+        "role": "Viewer"
+      }
+    ]
   }
 }
