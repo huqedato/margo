@@ -9,7 +9,7 @@ import zoomOutSvg from '../assets/zoom-out.svg?raw'
 import infoSvg from '../assets/info.svg?raw'
 import Mark from 'mark.js';
 
-const data = reactive({content: null})
+const data = reactive({ content: null })
 const searchInstance = ref(null)
 const searchOpen = ref(false)
 const loading = ref(false)
@@ -111,8 +111,8 @@ function handleKeydown(e) {
   if (e.key === 'F3') { e.preventDefault(); openSearch() }
   if (e.key === 'F4') { e.preventDefault(); ZoomIn() }
   if (e.key === 'F5') { e.preventDefault(); ZoomOut() }
-  if (e.key === 'F1') { e.preventDefault(); console.log('About Margo: A Markdown Viewer built with Wails and Vue.js') }
-  if (e.key === 'Escape' && searchOpen.value) { e.preventDefault(); closeSearch() }
+  if (e.key === 'F1') { e.preventDefault(); openAbout() }
+  if (e.key === 'Escape') { e.preventDefault(); closeSearch(); closeAbout() }
 }
 
 function find(term) {
@@ -149,6 +149,20 @@ function closeSearch() {
   }
 }
 
+function openAbout() {
+  const aboutModal = document.getElementById('about-modal')
+  if (aboutModal) {
+    aboutModal.style.display = 'flex'
+  }
+}
+
+function closeAbout() {
+  const aboutModal = document.getElementById('about-modal')
+  if (aboutModal) {
+    aboutModal.style.display = 'none'
+  }
+}
+
 </script>
 
 <template>
@@ -170,7 +184,7 @@ function closeSearch() {
           <div class="item" @click="ZoomOut" v-html="zoomOutSvg" title="Zoom Out - F5"></div>
         </div>
         <div class="card">
-          <div class="item" v-html="infoSvg" title="About - F1"></div>
+          <div class="item" v-html="infoSvg" title="About - F1" @click="openAbout"></div>
         </div>
       </div>
       <div class="hamburger" :class="{ visible: !footerExpanded }" @click="expandFooter">☰</div>
@@ -178,6 +192,14 @@ function closeSearch() {
         <span>Look for:</span>
         <input type="text" @input="find($event.target.value)" />
         <span class="close-btn" @click="closeSearch">×</span>
+      </div>
+      <div id="about-modal">
+        <div>Margo</div>
+        <small>v0.1.0</small>
+        <small>Copyright © 2026 Quda Theo</small>
+        <small><a href="https://github.com/huqedato/margo" target="_blank">Margo on GitHub</a></small>
+        <span class="close-btn"
+          @click="closeAbout">×</span>
       </div>
     </div>
     <div id="no-content" v-else>

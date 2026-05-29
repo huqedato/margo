@@ -21,7 +21,7 @@
       {
         "ext": "md",
         "name": "Markdown",
-        "description": "Markdown file",
+        "description": "Markdown Document",
         "iconName": "appicon",
         "role": "Viewer"
       }
