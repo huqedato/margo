@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted, onUnmounted, nextTick } from 'vue'
-import { ConvertToMd } from '../../wailsjs/go/main/App'
+import { OpenFileFromFrontend, GetStartupFile } from '../../wailsjs/go/main/App'
 import { BrowserOpenURL } from '../../wailsjs/runtime/runtime'
 import openFileSvg from '../assets/open-file.svg?raw'
 import searchSvg from '../assets/search.svg?raw'
@@ -17,6 +17,19 @@ const footerExpanded = ref(false)
 let collapseTimer = null
 
 const COLLAPSE_DELAY = 10000
+
+
+onMounted(() => {
+  document.querySelector('main')?.addEventListener('click', handleLinkClick)
+  window.addEventListener('keydown', handleKeydown, true)
+  LoadInitialFile()
+})
+
+onUnmounted(() => {
+  document.querySelector('main')?.removeEventListener('click', handleLinkClick)
+  window.removeEventListener('keydown', handleKeydown, true)
+  clearCollapseTimer()
+})
 
 function handleLinkClick(e) {
   const anchor = e.target.closest('a')
@@ -70,23 +83,30 @@ function ZoomOut() {
 }
 
 
-onMounted(() => {
-  document.querySelector('main')?.addEventListener('click', handleLinkClick)
-  window.addEventListener('keydown', handleKeydown, true)
-})
 
-onUnmounted(() => {
-  document.querySelector('main')?.removeEventListener('click', handleLinkClick)
-  window.removeEventListener('keydown', handleKeydown, true)
-  clearCollapseTimer()
-})
+
+async function LoadInitialFile() {
+  try {
+    const file = await GetStartupFile()
+    if (file) {
+      data.content = file.html
+      await nextTick()
+      const contentEl = document.getElementById('content')
+      if (contentEl) {
+        searchInstance.value = new Mark(contentEl)
+      }
+    }
+  } catch (error) {
+    console.error('Error loading initial file:', error)
+  }
+}
 
 async function loadFile() {
   clearCollapseTimer()
   loading.value = true
   try {
     data.content = null
-    const file = await ConvertToMd()
+    const file = await OpenFileFromFrontend()
     if (file) {
       //console.dir(file)
       data.content = file.html
@@ -104,6 +124,8 @@ async function loadFile() {
     loading.value = false
   }
 }
+
+
 
 function handleKeydown(e) {
   const ctrl = e.ctrlKey || e.metaKey;
@@ -195,11 +217,10 @@ function closeAbout() {
       </div>
       <div id="about-modal">
         <div>Margo</div>
-        <small>v0.1.0</small>
+        <small>v0.2.0</small>
         <small>Copyright © 2026 Quda Theo</small>
         <small><a href="https://github.com/huqedato/margo" target="_blank">Margo on GitHub</a></small>
-        <span class="close-btn"
-          @click="closeAbout">×</span>
+        <span class="close-btn" @click="closeAbout">×</span>
       </div>
     </div>
     <div id="no-content" v-else>

@@ -20,7 +20,8 @@ import (
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx             context.Context
+	initialFilePath string
 }
 
 type FileDetails struct {
@@ -38,11 +39,13 @@ type ReturnResult struct {
 
 // NewApp creates a new App application struct
 func NewApp() *App {
-	return &App{}
+	app := &App{}
+	if len(os.Args) > 1 {
+		app.initialFilePath = os.Args[1]
+	}
+	return app
 }
 
-// startup is called when the app starts. The context is saved
-// so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
@@ -87,20 +90,49 @@ func (a *App) SelectAndReadFile() (*FileDetails, error) {
 	}, nil
 }
 
-func (a *App) ConvertToMd(file *FileDetails) (*ReturnResult, error) {
-	// Placeholder for conversion logic
-	file, err := a.SelectAndReadFile()
+func (a *App) GetStartupFile() (*ReturnResult, error) {
+	if a.initialFilePath == "" {
+		return nil, nil // No file provided at startup
+	}
+
+	// Get file metadata
+	info, err := os.Stat(a.initialFilePath)
 	if err != nil {
 		return nil, err
 	}
 
+	// Read file content
+	content, err := os.ReadFile(a.initialFilePath)
+	if err != nil {
+		return nil, err
+	}
+
+	fileDetails := &FileDetails{
+		Filename: filepath.Base(a.initialFilePath),
+		Path:     a.initialFilePath,
+		Size:     info.Size(),
+		Content:  string(content),
+	}
+
+	return a.ConvertToMd(fileDetails)
+}
+
+func (a *App) OpenFileFromFrontend(file *FileDetails) (*ReturnResult, error) {
+	file, err := a.SelectAndReadFile()
+	if err != nil {
+		return nil, err
+	}
+	return a.ConvertToMd(file)
+}
+
+func (a *App) ConvertToMd(file *FileDetails) (*ReturnResult, error) {
+
 	htmlContent := goldmark.New(
 		goldmark.WithExtensions(extension.GFM, extension.Footnote, extension.Typographer, extension.Linkify,
 			highlighting.NewHighlighting(
-				highlighting.WithStyle("onedark"), // Use a Chroma style for syntax highlighting
+				highlighting.WithStyle("onedark"),
 				highlighting.WithFormatOptions(
 					chromahtml.WithLineNumbers(false),
-					//chromahtml.WithClasses(true), // Use CSS classes for styling
 					chromahtml.WithCustomCSS(map[chroma.TokenType]string{
 						chroma.Background: "background-color: transparent;", // Remove background color from code blocks
 						chroma.PreWrapper: "padding: 1em; border-radius: 5px;",
@@ -109,11 +141,11 @@ func (a *App) ConvertToMd(file *FileDetails) (*ReturnResult, error) {
 			),
 		), // Add GitHub Flavored Markdown extension
 		goldmark.WithParserOptions(
-			parser.WithAutoHeadingID(), // Automatically generate IDs for headings
+			parser.WithAutoHeadingID(),
 		),
 		goldmark.WithRendererOptions(
-			html.WithHardWraps(), // Render hard line breaks as <br>
-			html.WithXHTML(),     // Use XHTML-style self-closing tags
+			html.WithHardWraps(),
+			html.WithXHTML(),
 		),
 		goldmark.WithRendererOptions(
 			html.WithUnsafe(), // Allow raw HTML in Markdown (be cautious with this)
@@ -129,7 +161,6 @@ func (a *App) ConvertToMd(file *FileDetails) (*ReturnResult, error) {
 	return &ReturnResult{
 		Filename: file.Filename,
 		Path:     file.Path,
-		Html:     buf.String(), // Use the converted HTML content
-
+		Html:     buf.String(),
 	}, nil
 }

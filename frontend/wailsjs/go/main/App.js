@@ -6,6 +6,14 @@ export function ConvertToMd(arg1) {
   return window['go']['main']['App']['ConvertToMd'](arg1);
 }
 
+export function GetStartupFile() {
+  return window['go']['main']['App']['GetStartupFile']();
+}
+
+export function OpenFileFromFrontend(arg1) {
+  return window['go']['main']['App']['OpenFileFromFrontend'](arg1);
+}
+
 export function SelectAndReadFile() {
   return window['go']['main']['App']['SelectAndReadFile']();
 }

@@ -31,7 +31,6 @@ func main() {
 		Bind: []interface{}{
 			app,
 		},
-
 		// custom theme
 		Windows: &windows.Options{
 			Theme: windows.Dark,
@@ -40,6 +39,10 @@ func main() {
 				DarkModeTitleText: windows.RGB(200, 200, 200),
 				DarkModeBorder:    windows.RGB(0, 0, 0),
 			},
+		},
+		// Drag and drop support
+		DragAndDrop: &options.DragAndDrop{
+			EnableFileDrop: true,
 		},
 	})
 

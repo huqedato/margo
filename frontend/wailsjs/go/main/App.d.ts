@@ -4,4 +4,8 @@ import {main} from '../models';
 
 export function ConvertToMd(arg1:main.FileDetails):Promise<main.ReturnResult>;
 
+export function GetStartupFile():Promise<main.ReturnResult>;
+
+export function OpenFileFromFrontend(arg1:main.FileDetails):Promise<main.ReturnResult>;
+
 export function SelectAndReadFile():Promise<main.FileDetails>;

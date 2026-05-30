@@ -126,7 +126,7 @@ h6 {
 :root {
     --bg: hsl(240, 90%, 5%);
     --text: hsl(240, 0%, 80%);
-    --code-text: hsl(240, 20%, 75%);
+    --code-text: hsl(222, 30%, 80%);
     --code-bg: hsl(240, 30%, 15%);
     --border: hsl(0, 0%, 20%);
     --hero: hsl(186, 65%, 45%);
@@ -289,7 +289,8 @@ body {
 
 #content code {
     font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
-    font-size: 0.80em;
+    font-size: 0.85em;
+    color: var(--code-text);
 }
 
 /* ----- Code: Block-level ----- */
@@ -487,46 +488,6 @@ body {
     text-decoration: none;
 }
 
-/* ----- Code Syntax Highlighting (Chroma spans via goldmark-highlighting) ----- */
-
-/*
-  When a fenced code block declares a language, goldmark-highlighting + chroma
-  wraps each token in a <span> with semantic classes. Examples:
-    .k  = keyword
-    .n  = name (identifier)
-    .s  = string literal
-    .c  = comment
-    .o  = operator
-    .p  = punctuation
-    .m  = number
-    .kt = keyword type
-    .kd = keyword declaration
-    .nf = function name
-    .nb = built-in name
-    ...and many more (see chroma documentation for full list).
-  Uncomment the rule below to style highlighted spans, or leave as-is —
-  goldmark-highlighting emits inline style colors when a chroma style is applied.
-*/
-
-/* Base container for syntax-highlighted code */
-#content .chroma {
-    /* (chroma adds this class to the <code> or <pre> element) */
-}
-
-/* All chroma token spans */
-#content .chroma .k,
-#content .chroma .n,
-#content .chroma .s,
-#content .chroma .c,
-#content .chroma .o,
-#content .chroma .p,
-#content .chroma .m,
-#content .chroma .kt,
-#content .chroma .kd,
-#content .chroma .nf,
-#content .chroma .nb {
-    /* color: ; */
-}
 
 /* ----- Definition Lists (if extension is used) ----- */
 
