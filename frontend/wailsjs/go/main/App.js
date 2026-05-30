@@ -6,6 +6,10 @@ export function ConvertToMd(arg1) {
   return window['go']['main']['App']['ConvertToMd'](arg1);
 }
 
+export function GetAppInfo() {
+  return window['go']['main']['App']['GetAppInfo']();
+}
+
 export function GetStartupFile() {
   return window['go']['main']['App']['GetStartupFile']();
 }

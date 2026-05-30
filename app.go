@@ -3,6 +3,8 @@ package main
 import (
 	"bytes"
 	"context"
+	_ "embed"
+	"encoding/json"
 	"errors"
 	"os"
 	"path/filepath"
@@ -18,10 +20,24 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+//go:embed wails.json
+var wailsConfig []byte
+
 // App struct
 type App struct {
 	ctx             context.Context
 	initialFilePath string
+}
+
+type AppInfo struct {
+	Info struct {
+		ProductName    string `json:"productName"`
+		ProductVersion string `json:"productVersion"`
+		CompanyName    string `json:"companyName"`
+		Copyright      string `json:"copyright"`
+		Description    string `json:"description"`
+		License        string `json:"license"`
+	} `json:"info"`
 }
 
 type FileDetails struct {
@@ -163,4 +179,13 @@ func (a *App) ConvertToMd(file *FileDetails) (*ReturnResult, error) {
 		Path:     file.Path,
 		Html:     buf.String(),
 	}, nil
+}
+
+func (a *App) GetAppInfo() (*AppInfo, error) {
+	var info AppInfo
+	err := json.Unmarshal(wailsConfig, &info)
+	if err != nil {
+		return nil, err
+	}
+	return &info, nil
 }

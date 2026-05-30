@@ -726,13 +726,19 @@ body {
    box-shadow: 1em 2em 4em rgba(137, 137, 137, 0.09), -1em -1em 6em rgba(222, 222, 222, 0.11);
     backdrop-filter: blur(10px);
     z-index: 102;
-    width: 300%;
-    max-width: 300px;
-    height: 200px;
+    max-width: 350px;
+    height: 250px;
     display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+#about-modal small {
+    opacity: 0.8;
+    font-size: 0.8em;
+    /* Optional: Center text */
+    text-align: center;
 }
 
 #about-modal .close-btn {

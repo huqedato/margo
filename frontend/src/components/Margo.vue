@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, ref, onMounted, onUnmounted, nextTick } from 'vue'
-import { OpenFileFromFrontend, GetStartupFile } from '../../wailsjs/go/main/App'
+import { OpenFileFromFrontend, GetStartupFile, GetAppInfo } from '../../wailsjs/go/main/App'
 import { BrowserOpenURL } from '../../wailsjs/runtime/runtime'
 import openFileSvg from '../assets/open-file.svg?raw'
 import searchSvg from '../assets/search.svg?raw'
@@ -9,7 +9,10 @@ import zoomOutSvg from '../assets/zoom-out.svg?raw'
 import infoSvg from '../assets/info.svg?raw'
 import Mark from 'mark.js';
 
-const data = reactive({ content: null })
+const data = reactive({
+  content: null,
+  appInfo: {}
+})
 const searchInstance = ref(null)
 const searchOpen = ref(false)
 const loading = ref(false)
@@ -23,6 +26,7 @@ onMounted(() => {
   document.querySelector('main')?.addEventListener('click', handleLinkClick)
   window.addEventListener('keydown', handleKeydown, true)
   LoadInitialFile()
+  LoadAppInfo()
 })
 
 onUnmounted(() => {
@@ -82,7 +86,15 @@ function ZoomOut() {
   }
 }
 
-
+async function LoadAppInfo() {
+  try {
+    const info = await GetAppInfo()
+    data.appInfo = info.info
+    //console.dir(info)
+  } catch (error) {
+    console.error('Error loading app info:', error)
+  }
+}
 
 
 async function LoadInitialFile() {
@@ -216,10 +228,14 @@ function closeAbout() {
         <span class="close-btn" @click="closeSearch">×</span>
       </div>
       <div id="about-modal">
-        <div>Margo</div>
-        <small>v0.2.0</small>
-        <small>Copyright © 2026 Quda Theo</small>
-        <small><a href="https://github.com/huqedato/margo" target="_blank">Margo on GitHub</a></small>
+        <div>{{ data.appInfo.productName }}</div>
+        <br>
+        <small>{{ data.appInfo.description }}</small>
+        <small>v{{ data.appInfo.productVersion }}</small>
+        <small>Copyright © 2026 {{ data.appInfo.companyName }}</small>
+        <small>License: {{ data.appInfo.license }}</small>
+        <small><a href="https://github.com/huqedato/margo" target="_blank">{{ data.appInfo.productName }} on
+            GitHub</a></small>
         <span class="close-btn" @click="closeAbout">×</span>
       </div>
     </div>
