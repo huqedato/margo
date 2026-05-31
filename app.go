@@ -23,7 +23,6 @@ import (
 //go:embed wails.json
 var wailsConfig []byte
 
-// App struct
 type App struct {
 	ctx             context.Context
 	initialFilePath string
@@ -43,7 +42,7 @@ type AppInfo struct {
 type FileDetails struct {
 	Filename string `json:"filename"`
 	Path     string `json:"path"`
-	Size     int64  `json:"size"` // bytes
+	Size     int64  `json:"size"`
 	Content  string `json:"content"`
 }
 
@@ -53,7 +52,6 @@ type ReturnResult struct {
 	Html     string `json:"html"`
 }
 
-// NewApp creates a new App application struct
 func NewApp() *App {
 	app := &App{}
 	if len(os.Args) > 1 {
@@ -81,18 +79,15 @@ func (a *App) SelectAndReadFile() (*FileDetails, error) {
 		return nil, err
 	}
 
-	// User cancelled the dialog
 	if path == "" {
 		return nil, errors.New("file selection cancelled")
 	}
 
-	// Get file metadata
 	info, err := os.Stat(path)
 	if err != nil {
 		return nil, err
 	}
 
-	// Read file content
 	content, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
@@ -102,7 +97,7 @@ func (a *App) SelectAndReadFile() (*FileDetails, error) {
 		Filename: filepath.Base(path),
 		Path:     path,
 		Size:     info.Size(),
-		Content:  string(content), // Cast []byte to string for text files
+		Content:  string(content),
 	}, nil
 }
 
@@ -111,13 +106,11 @@ func (a *App) GetStartupFile() (*ReturnResult, error) {
 		return nil, nil
 	}
 
-	// Get file metadata
 	info, err := os.Stat(a.initialFilePath)
 	if err != nil {
 		return nil, err
 	}
 
-	// Read file content
 	content, err := os.ReadFile(a.initialFilePath)
 	if err != nil {
 		return nil, err
@@ -150,12 +143,12 @@ func (a *App) ConvertToMd(file *FileDetails) (*ReturnResult, error) {
 				highlighting.WithFormatOptions(
 					chromahtml.WithLineNumbers(false),
 					chromahtml.WithCustomCSS(map[chroma.TokenType]string{
-						chroma.Background: "background-color: transparent;", // Remove background color from code blocks
+						chroma.Background: "background-color: transparent;",
 						chroma.PreWrapper: "padding: 1em; border-radius: 5px;",
 					}),
 				),
 			),
-		), // Add GitHub Flavored Markdown extension
+		),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
 		),
@@ -164,7 +157,7 @@ func (a *App) ConvertToMd(file *FileDetails) (*ReturnResult, error) {
 			html.WithXHTML(),
 		),
 		goldmark.WithRendererOptions(
-			html.WithUnsafe(), // Allow raw HTML in Markdown (be cautious with this)
+			html.WithUnsafe(),
 		),
 	)
 	var buf bytes.Buffer

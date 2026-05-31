@@ -1,39 +1,31 @@
-/* 1. Box-sizing: Border-box for all elements */
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
 
-/* 2. Prevent font size inflation on mobile */
 html {
     -moz-text-size-adjust: none;
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
 }
 
-/* 3. Remove default margins (except dialog for centering) */
 :not(dialog) {
     margin: 0;
 }
 
-/* 4. Enable smooth size interpolations for animations */
 @media (prefers-reduced-motion: no-preference) {
     html {
         scroll-behavior: smooth;
-        /* Bonus: Smooth scrolling */
     }
 }
 
-/* 5. Core body typography */
 body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     min-height: 100svh;
-    /* Small viewport height for full coverage */
 }
 
-/* 6. Shorter line heights for headings and forms */
 h1,
 h2,
 h3,
@@ -48,7 +40,6 @@ textarea {
     line-height: 1.1;
 }
 
-/* 7. Balanced text wrapping */
 h1,
 h2,
 h3,
@@ -62,7 +53,6 @@ p {
     text-wrap: pretty;
 }
 
-/* 8. Media elements: Responsive and block-level */
 img,
 picture,
 video,
@@ -73,7 +63,6 @@ svg {
     height: auto;
 }
 
-/* 9. Inherit fonts in form controls */
 input,
 button,
 textarea,
@@ -81,37 +70,30 @@ select {
     font: inherit;
 }
 
-/* 10. Ensure textareas have usable height */
 textarea:not([rows]) {
     min-height: 10em;
 }
 
-/* 11. Remove list styles only for semantic lists */
 ul[role="list"],
 ol[role="list"] {
     list-style: none;
     padding-inline-start: 0;
-    /* Logical property for RTL */
 }
 
-/* 12. Links: Skip ink on underlines */
 a:not([class]) {
     text-decoration-skip-ink: auto;
     color: currentColor;
 }
 
-/* 13. Anchored elements: Extra scroll margin */
 :target {
     scroll-margin-block: 5ex;
 }
 
-/* 14. Isolation for root (e.g., React/Vue apps) */
 #root,
 #__next {
     isolation: isolate;
 }
 
-/* 15. Overflow wrapping for long words */
 p,
 h1,
 h2,
@@ -141,23 +123,19 @@ h6 {
     --table-header-bg: hsl(240, 30%, 15%);
 }
 
-/* width */
 ::-webkit-scrollbar {
     width: 0px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
     background: var(--code-bg);
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
     background: var(--code-text);
     border-radius: 1px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: var(--code-text);
 }
@@ -180,17 +158,15 @@ body {
    ========================================================================== */
 
 #content {
-    /* Optional: max-width and centering for better readability */
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 5vh;
     margin-bottom: 10vh;
     padding-left: 1em;
     padding-right: 1em;
-
 }
 
-/* ----- Headings h1–h6 ----- */
 
 #content h1 {
     font-size: 2.25em;
@@ -232,14 +208,12 @@ body {
     margin-bottom: 1em;
 }
 
-/* ----- Paragraphs ----- */
 
 #content p {
     margin-top: 1em;
     margin-bottom: 1em;
 }
 
-/* ----- Blockquotes ----- */
 
 #content blockquote {
     margin: 1em 0 0 -1em;
@@ -252,12 +226,10 @@ body {
     color: var(--quote-text);
 }
 
-/* Nested blockquote */
 #content blockquote blockquote {
     margin: 0.5em 0;
 }
 
-/* ----- Lists (unordered & ordered) ----- */
 
 #content ul {
     padding-left: 1.5em;
@@ -277,16 +249,12 @@ body {
     margin-bottom: 0.1em;
 }
 
-/* Nested lists inside list items */
 #content li>ul,
 #content li>ol {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
 
-/* ----- Code: Inline ----- */
-
-/* Inline code: `backticks` */
 
 #content code {
     font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
@@ -294,9 +262,6 @@ body {
     color: var(--code-text);
 }
 
-/* ----- Code: Block-level ----- */
-
-/* Fenced / indented code block container */
 #content pre {
     padding: 1em;
     margin-top: 1em;
@@ -306,7 +271,6 @@ body {
     border-radius: 6px;
 }
 
-/* Code inside a pre block */
 #content pre>code {
     font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', 'Monaco', monospace;
     font-size: 0.75em;
@@ -314,12 +278,9 @@ body {
     line-height: 1.4;
 }
 
-/* Inline code inside a link (e.g. [`code`](url)) */
 #content a code {
     color: var(--hero);
 }
-
-/* ----- Horizontal Rules ----- */
 
 #content hr {
     margin-top: 3em;
@@ -329,7 +290,6 @@ body {
     height: 1px;
 }
 
-/* ----- Tables (GFM) ----- */
 
 #content table {
     width: 100%;
@@ -366,12 +326,10 @@ body {
     border: 1px solid var(--border);
 }
 
-/* Alternating row colors (striped table) */
 #content tr:nth-child(even) {
     background: rgba(128, 128, 128, 0.08);
 }
 
-/* Table cell alignment (goldmark sets align attribute) */
 #content th[align="left"],
 #content td[align="left"] {
     text-align: left;
@@ -387,7 +345,6 @@ body {
     text-align: right;
 }
 
-/* ----- Links ----- */
 
 #content a {
     color: var(--hero);
@@ -400,7 +357,6 @@ body {
     text-underline-position: under;
 }
 
-/* ----- Images ----- */
 
 #content img {
     max-width: 100%;
@@ -408,61 +364,48 @@ body {
     border-radius: 4px;
 }
 
-/* ----- Inline Formatting ----- */
-
-/* Bold: **text** or __text__ */
 #content strong {
     font-weight: bold;
 }
 
-/* Italic: *text* or _text_ */
 #content em {
     font-style: italic;
 }
 
-/* Strikethrough: ~~text~~ (GFM) */
 #content del,
 #content s {
     text-decoration: line-through;
     opacity: 0.7;
 }
 
-/* Highlighted text: ==text== (goldmark-highlighting extension) */
 #content mark {
     background: var(--hero);
     color: #fff;
 }
 
-/* Footnote reference superscript (goldmark-footnotes extension) */
 #content sup {
     font-size: 0.75em;
     vertical-align: super;
 }
 
-/* Subscript (rare in markdown, raw HTML passthrough or extension) */
 #content sub {
     font-size: 0.75em;
     vertical-align: sub;
 }
 
 
-/* ----- Task List Items (GFM) ----- */
 
-/* Disabled checkbox inside task list items: - [ ] or - [x] */
 #content input[type="checkbox"] {
     margin-right: 0.5em;
     vertical-align: middle;
     accent-color: var(--hero);
 }
 
-/* Task list item (the <li> containing a checkbox) */
 #content li:has(> input[type="checkbox"]) {
     list-style: none;
 }
 
-/* ----- Footnotes Section (goldmark-footnotes extension) ----- */
 
-/* Container div — .footnotes class (div.footnotes) */
 #content .footnotes {
     margin-top: 2em;
     padding-top: 1em;
@@ -483,14 +426,11 @@ body {
     margin-bottom: 0.5em;
 }
 
-/* Footnote back-reference link (↩) */
 #content .footnotes a {
     color: var(--hero);
     text-decoration: none;
 }
 
-
-/* ----- Definition Lists (if extension is used) ----- */
 
 #content dl {
     margin-top: 1em;
@@ -507,7 +447,6 @@ body {
     margin-bottom: 0.5em;
 }
 
-/* ----- Details / Summary (collapsible sections, if extension is used) ----- */
 
 #content details {
     margin-top: 1em;
@@ -519,9 +458,6 @@ body {
     font-weight: 600;
 }
 
-/* ==========================================================================
-   End of Markdown Content Styles
-   ========================================================================== */
 
 /* No content situation */
 #no-content {
@@ -629,12 +565,10 @@ body {
 }
 
 #footer.grid .card .item:hover {
-    /* Hover effect : zoom and color change */
     color: var(--text);
     transform: scale(1.075);
 }
 
-/* Collapsible footer hamburger */
 .hamburger {
     position: fixed;
     bottom: 0.35rem;

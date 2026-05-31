@@ -141,6 +141,7 @@ async function loadFile() {
 
 function handleKeydown(e) {
   const ctrl = e.ctrlKey || e.metaKey;
+  if (e.key === 'm') { e.preventDefault(); expandFooter() }
   if (ctrl && e.key.toLowerCase() === 'o') { e.preventDefault(); loadFile() }
   if (e.key === 'F3') { e.preventDefault(); openSearch() }
   if (e.key === 'F4') { e.preventDefault(); ZoomIn() }

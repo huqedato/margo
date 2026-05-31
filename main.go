@@ -13,10 +13,8 @@ import (
 var assets embed.FS
 
 func main() {
-	// Create an instance of the app structure
 	app := NewApp()
 
-	// Create application with options
 	err := wails.Run(&options.App{
 		Title:     "Margo",
 		Width:     1024,
@@ -31,7 +29,6 @@ func main() {
 		Bind: []interface{}{
 			app,
 		},
-		// custom theme
 		Windows: &windows.Options{
 			Theme: windows.Dark,
 			CustomTheme: &windows.ThemeSettings{
@@ -40,7 +37,6 @@ func main() {
 				DarkModeBorder:    windows.RGB(0, 0, 0),
 			},
 		},
-		// Drag and drop support
 		DragAndDrop: &options.DragAndDrop{
 			EnableFileDrop: true,
 		},
