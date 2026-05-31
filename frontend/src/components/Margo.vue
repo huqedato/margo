@@ -109,7 +109,7 @@ async function LoadInitialFile() {
       }
     }
   } catch (error) {
-    console.error('Error loading initial file:', error)
+    //console.error('Error loading initial file:', error)
   }
 }
 

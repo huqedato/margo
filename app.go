@@ -108,7 +108,7 @@ func (a *App) SelectAndReadFile() (*FileDetails, error) {
 
 func (a *App) GetStartupFile() (*ReturnResult, error) {
 	if a.initialFilePath == "" {
-		return nil, nil // No file provided at startup
+		return nil, nil
 	}
 
 	// Get file metadata
