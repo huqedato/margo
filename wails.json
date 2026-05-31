@@ -12,8 +12,8 @@
   "info": {
     "productName": "Margo",
     "companyName": "Quda Theo",
-    "copyright": "Copyright (c) 2024 Quda Theo",
-    "productVersion": "0.2.3",
+    "copyright": "Copyright © 2026 Quda Theo",
+    "productVersion": "1.0.0",
     "description": "A fast simple opinionated markdown viewer",
     "license": "MIT",
     "fileAssociations": [

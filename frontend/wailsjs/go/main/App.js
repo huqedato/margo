@@ -14,6 +14,10 @@ export function GetStartupFile() {
   return window['go']['main']['App']['GetStartupFile']();
 }
 
+export function LoadFileFromPath(arg1) {
+  return window['go']['main']['App']['LoadFileFromPath'](arg1);
+}
+
 export function OpenFileFromFrontend(arg1) {
   return window['go']['main']['App']['OpenFileFromFrontend'](arg1);
 }

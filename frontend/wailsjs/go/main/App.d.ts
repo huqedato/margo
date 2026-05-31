@@ -8,6 +8,8 @@ export function GetAppInfo():Promise<main.AppInfo>;
 
 export function GetStartupFile():Promise<main.ReturnResult>;
 
+export function LoadFileFromPath(arg1:string):Promise<main.ReturnResult>;
+
 export function OpenFileFromFrontend(arg1:main.FileDetails):Promise<main.ReturnResult>;
 
 export function SelectAndReadFile():Promise<main.FileDetails>;

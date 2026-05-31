@@ -1,6 +1,7 @@
 <script setup>
 import { reactive, ref, onMounted, onUnmounted, nextTick } from 'vue'
-import { OpenFileFromFrontend, GetStartupFile, GetAppInfo } from '../../wailsjs/go/main/App'
+import { OpenFileFromFrontend, GetStartupFile, LoadFileFromPath, GetAppInfo } from '../../wailsjs/go/main/App'
+import { OnFileDrop, OnFileDropOff } from '../../wailsjs/runtime/runtime'
 import { BrowserOpenURL } from '../../wailsjs/runtime/runtime'
 import openFileSvg from '../assets/open-file.svg?raw'
 import searchSvg from '../assets/search.svg?raw'
@@ -27,12 +28,14 @@ onMounted(() => {
   window.addEventListener('keydown', handleKeydown, true)
   LoadInitialFile()
   LoadAppInfo()
+  LoadFileFromDrop()
 })
 
 onUnmounted(() => {
   document.querySelector('main')?.removeEventListener('click', handleLinkClick)
   window.removeEventListener('keydown', handleKeydown, true)
   clearCollapseTimer()
+  OnFileDropOff()
 })
 
 function handleLinkClick(e) {
@@ -68,7 +71,6 @@ function expandFooter() {
 }
 
 
-// max zoom level is 2.0, min zoom level is 0.3
 function ZoomIn() {
   const content = document.getElementById('content')
   if (content) {
@@ -76,7 +78,6 @@ function ZoomIn() {
     content.style.zoom = Math.min(currentZoom + 0.03, 2.0).toString()
   }
 }
-
 
 function ZoomOut() {
   const content = document.getElementById('content')
@@ -90,59 +91,68 @@ async function LoadAppInfo() {
   try {
     const info = await GetAppInfo()
     data.appInfo = info.info
-    //console.dir(info)
   } catch (error) {
     console.error('Error loading app info:', error)
   }
 }
 
+async function loadFile(file) {
+  loading.value = true
+  if (file) {
+    data.content = file.html
+    await nextTick()
+    const contentEl = document.getElementById('content')
+    if (contentEl) {
+      searchInstance.value = new Mark(contentEl)
+    }
+    expandFooter()
+  }
+}
 
 async function LoadInitialFile() {
   try {
     const file = await GetStartupFile()
-    if (file) {
-      data.content = file.html
-      await nextTick()
-      const contentEl = document.getElementById('content')
-      if (contentEl) {
-        searchInstance.value = new Mark(contentEl)
-      }
-    }
+    await loadFile(file)
   } catch (error) {
-    //console.error('Error loading initial file:', error)
+    console.error('Error loading initial file:', error)
+  }
+  finally {
+    loading.value = false
   }
 }
 
-async function loadFile() {
-  clearCollapseTimer()
-  loading.value = true
+async function loadFileFromMenu() {
   try {
-    data.content = null
     const file = await OpenFileFromFrontend()
-    if (file) {
-      //console.dir(file)
-      data.content = file.html
-      await nextTick()
-      const contentEl = document.getElementById('content')
-      if (contentEl) {
-        searchInstance.value = new Mark(contentEl)
-      }
-      footerExpanded.value = true
-      scheduleCollapse()
-    }
+    await loadFile(file)
   } catch (error) {
-    console.error(error)
+    console.error('Error loading file from menu:', error)
   } finally {
     loading.value = false
   }
 }
 
-
+async function LoadFileFromDrop() {
+  try {
+  await OnFileDrop(async (x, y, paths) => {
+    //console.log('File dropped:', paths)
+    if (paths && paths.length > 0) {
+     const file = await LoadFileFromPath(paths[0])
+     await loadFile(file)
+    }
+  }, false)
+  } catch (error) {
+    console.error('Error setting up file drop:', error)
+  }
+  finally {
+    loading.value = false
+  }
+}
 
 function handleKeydown(e) {
   const ctrl = e.ctrlKey || e.metaKey;
   if (e.key === 'm') { e.preventDefault(); expandFooter() }
-  if (ctrl && e.key.toLowerCase() === 'o') { e.preventDefault(); loadFile() }
+  if (ctrl && e.key.toLowerCase() === 'o') { e.preventDefault(); loadFileFromMenu() }
   if (e.key === 'F3') { e.preventDefault(); openSearch() }
   if (e.key === 'F4') { e.preventDefault(); ZoomIn() }
   if (e.key === 'F5') { e.preventDefault(); ZoomOut() }
@@ -207,7 +217,7 @@ function closeAbout() {
       <div id="footer" class="grid" :class="{ collapsed: !footerExpanded }" @click="scheduleCollapse"
         @mouseenter="scheduleCollapse" @mouseleave="scheduleCollapse" @mousemove="scheduleCollapse">
         <div class="card">
-          <div class="item" @click="loadFile" v-html="openFileSvg" title="Open File - Ctrl+O"></div>
+          <div class="item" @click="loadFileFromMenu" v-html="openFileSvg" title="Open File - Ctrl+O"></div>
         </div>
         <div class="card">
           <div class="item" @click="openSearch" v-html="searchSvg" title="Search - F3"></div>
@@ -233,7 +243,7 @@ function closeAbout() {
         <br>
         <small>{{ data.appInfo.description }}</small>
         <small>v{{ data.appInfo.productVersion }}</small>
-        <small>Copyright © 2026 {{ data.appInfo.companyName }}</small>
+        <small>{{ data.appInfo.copyright }}</small>
         <small>License: {{ data.appInfo.license }}</small>
         <small><a href="https://github.com/huqedato/margo" target="_blank">{{ data.appInfo.productName }} on
             GitHub</a></small>
@@ -242,7 +252,7 @@ function closeAbout() {
     </div>
     <div id="no-content" v-else>
       <p v-if="loading">Loading markdown...</p>
-      <button id="load-md" @click="loadFile" v-else>Load Markdown</button>
+      <button id="load-md" @click="loadFileFromMenu" v-else>Load Markdown</button>
     </div>
   </main>
 </template>

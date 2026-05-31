@@ -101,6 +101,27 @@ func (a *App) SelectAndReadFile() (*FileDetails, error) {
 	}, nil
 }
 
+func (a *App) LoadFileFromPath(path string) (*ReturnResult, error) {
+	info, err := os.Stat(path)
+	if err != nil {
+		return nil, err
+	}
+
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	fileDetails := &FileDetails{
+		Filename: filepath.Base(path),
+		Path:     path,
+		Size:     info.Size(),
+		Content:  string(content),
+	}
+
+	return a.ConvertToMd(fileDetails)
+}
+
 func (a *App) GetStartupFile() (*ReturnResult, error) {
 	if a.initialFilePath == "" {
 		return nil, nil
